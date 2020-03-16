@@ -16,27 +16,52 @@ namespace APOD
         private void Form1_Load(object sender, EventArgs e)
         {
             // TODO: Set the text in the date TextBox to today's date,
-            // formatted as MM/DD/YYYY           
+            // formatted as MM/DD/YYYY 
+            DateTime today = DateTime.Today;
+            txtDate.Text = $"{today:d}";
         }
 
         private void btnGetToday_Click(object sender, EventArgs e)
         {
-            // TODO: Request the APOD picture for today
+            DateTime today = DateTime.Today;// Represents the current calendar date
+            //Request the APOD picture for today
+            GetAPOD(today);
         }
 
         private void btnGetForDate_Click(object sender, EventArgs e)
         {
+            try {
 
-            //TODO: Attempt to convert text in txtDate into a DateTime
+                // Attempt to convert text into a DateTime
+                // This will throw a FormatException if the date can't be parsed
+                DateTime date = DateTime.Parse(txtDate.Text);
 
-            //TODO: Make sure the date is today or in the past
+                // Make sure the date is today or in the past
+                if (date > DateTime.Today)
+                {
+                    //Throw FormatException, to be caught in the catch block below
+                    throw new FormatException("Date can't be in the future");
+                }
 
-            //TODO: And make sure date is June 16, 1995 or later, the date APOD service started
+                // And make sure date is June 16, 1995 or later, the date APOD service started
+                if (date < new DateTime(1995, 06, 16))
+                {
+                    //Also to be caught by, and handled by, the catch block
+                    throw new FormatException("Date can't before June 16, 1995");
+                }
 
-            //TODO: If date is a DateTime and within the allowed date range, 
-            //  request APOD picture for this date 
+                //If date is a valid DateTime and within the allowed date range, 
+                //fetch Astronomy picture for this date
+                GetAPOD(date);
+                //  request APOD picture for this date 
 
-            // TODO: show MessageBox error message if date entered is not valid
+            }   
+            catch(FormatException err)
+            {
+                // This catch block will handle all the different types of error 
+                // -Not a date, in the future, before the APOD service started
+                MessageBox.Show(err.Message, "Invalid date");
+            }
         }
 
         private void GetAPOD(DateTime date)
@@ -61,17 +86,28 @@ namespace APOD
 
         private void HandleResponse(APODResponse apodResponse, string error)
         {
-            // TODO: if there is an error from the request, show a MessageBox 
+            if (error != null)
+            {
+                MessageBox.Show(error, "Error");
+                return;
+            }
 
-            // TODO: Make sure response is an image (not a video or other media type) 
-
+            // Make sure response is an image (not a video or other media type) before loading 
+            if (apodResponse.MediaType.Equals("image"))
+            {
+                LoadImageResponseIntoForm(apodResponse);
+            }
+            else
+            {
+                MessageBox.Show($"The response is not an image. Please try another date.", "Sorry!");
+            }
             // TODO: If there are no errors, and the response is an image, call a method 
             //  (that you'll create) to display the info in the form
 
             // TODO: if APOD is not an image, display a message box, ask user to try another date
+
+
         }
-
-
 
         // TODO: Create new method to display data from an APODResponse in the form.
 
@@ -136,6 +172,7 @@ namespace APOD
             }
         }
 
+
         private void apodBackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Error != null)
@@ -164,6 +201,34 @@ namespace APOD
             }
 
             EnableForm(true);   // In any case, enable the user interface 
+        }
+
+        private void LoadImageResponseIntoForm(APODResponse apodResponse) 
+        {
+            //Show title
+            lblTitle.Text = apodResponse.Title;
+
+            // Format and show image credits
+            lblCredits.Text = $"Image credit: {apodResponse.Copyright}";
+
+            //Convert date string from response, which is in the form yyyy-mm-dd,
+            //into a DataTime, so it can be formatted and displayed
+            DateTime date = DateTime.Parse(apodResponse.Date);
+            string formattedDate = $"{date:D}"; // Example format "Saturday January 19, 2020"
+            lblDate.Text = formattedDate;
+
+            // Show explanation text
+            lblDescription.Text = apodResponse.Explanation;
+
+            //Load picture, handle any image loading errors
+            try 
+            {
+                picAstronomyPicture.Image = Image.FromFile(apodResponse.FileSavePath);
+            }
+            catch(Exception e) 
+            {
+                Debug.WriteLine($"Error loading image saved for {apodResponse}\n {e.Message}");
+            }
         }
     }
 }

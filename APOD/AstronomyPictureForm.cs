@@ -11,6 +11,7 @@ namespace APOD
         public AstronomyPictureForm()
         {
             InitializeComponent();
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -30,7 +31,8 @@ namespace APOD
 
         private void btnGetForDate_Click(object sender, EventArgs e)
         {
-            try {
+            try
+            {
 
                 // Attempt to convert text into a DateTime
                 // This will throw a FormatException if the date can't be parsed
@@ -55,8 +57,8 @@ namespace APOD
                 GetAPOD(date);
                 //  request APOD picture for this date 
 
-            }   
-            catch(FormatException err)
+            }
+            catch (FormatException err)
             {
                 // This catch block will handle all the different types of error 
                 // -Not a date, in the future, before the APOD service started
@@ -111,17 +113,17 @@ namespace APOD
 
         // TODO: Create new method to display data from an APODResponse in the form.
 
-            // TODO: Show title in lblTitle
+        // TODO: Show title in lblTitle
 
-            // TODO: Format and show image credits in lblCredits
+        // TODO: Format and show image credits in lblCredits
 
-            // TODO: Convert date string from response, which is in the form yyyy-mm-dd, into a DateTime
-            // TODO: format and display the date string in lblDate
+        // TODO: Convert date string from response, which is in the form yyyy-mm-dd, into a DateTime
+        // TODO: format and display the date string in lblDate
 
-            // TODO: Show explanation text in lblDescription
+        // TODO: Show explanation text in lblDescription
 
-            // TODO: Load the image into the picAstronomyPicture PictureBox.
-            // TODO: Catch any errors thrown loading the image
+        // TODO: Load the image into the picAstronomyPicture PictureBox.
+        // TODO: Catch any errors thrown loading the image
 
 
 
@@ -203,13 +205,17 @@ namespace APOD
             EnableForm(true);   // In any case, enable the user interface 
         }
 
-        private void LoadImageResponseIntoForm(APODResponse apodResponse) 
+        private void LoadImageResponseIntoForm(APODResponse apodResponse)
         {
             //Show title
             lblTitle.Text = apodResponse.Title;
+            string oldEscapeChar = "\n";
+            string newEscapeChar = oldEscapeChar.Replace("\n", " ");// remove escape character newline and replace with empty space
+            string s = "Image credit";
+            char[] another = s.ToCharArray().Distinct().ToArry();// duplicate string remove
 
             // Format and show image credits
-            lblCredits.Text = $"Image credit: {apodResponse.Copyright}";
+            lblCredits.Text = $"Image credit: {apodResponse.Copyright}, {newEscapeChar}, {another}";
 
             //Convert date string from response, which is in the form yyyy-mm-dd,
             //into a DataTime, so it can be formatted and displayed
@@ -220,15 +226,26 @@ namespace APOD
             // Show explanation text
             lblDescription.Text = apodResponse.Explanation;
 
+
             //Load picture, handle any image loading errors
-            try 
+            try
             {
                 picAstronomyPicture.Image = Image.FromFile(apodResponse.FileSavePath);
             }
-            catch(Exception e) 
+            catch (Exception e)
             {
                 Debug.WriteLine($"Error loading image saved for {apodResponse}\n {e.Message}");
+
             }
         }
     }
-}
+
+}       
+        
+        
+
+    
+
+
+        
+    

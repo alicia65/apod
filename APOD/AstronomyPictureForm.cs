@@ -209,13 +209,18 @@ namespace APOD
         {
             //Show title
             lblTitle.Text = apodResponse.Title;
-            string oldEscapeChar = "\n";
-            string newEscapeChar = oldEscapeChar.Replace("\n", " ");// remove escape character newline and replace with empty space
-            string s = "Image credit";
-            char[] another = s.ToCharArray().Distinct().ToArry();// duplicate string remove
+            string copyright = apodResponse.Copyright;
+            
+            copyright = copyright.Replace("\n", " ");// remove newline and replace with blank string or space
+
+            string str = "Image credit";//Initialze variable s by assigning string value called Image credit
+
+            //Do the same thing with the text "Image credit"
+            //Replace "Image credit" with ""
+            copyright = copyright.Replace("Image credit", " ");//remove duplicate string and replace  with blank string
 
             // Format and show image credits
-            lblCredits.Text = $"Image credit: {apodResponse.Copyright}, {newEscapeChar}, {another}";
+            lblCredits.Text = $"Image credit: {copyright}";
 
             //Convert date string from response, which is in the form yyyy-mm-dd,
             //into a DataTime, so it can be formatted and displayed

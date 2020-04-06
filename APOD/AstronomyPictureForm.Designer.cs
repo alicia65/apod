@@ -30,7 +30,6 @@
         {
             this.picAstronomyPicture = new System.Windows.Forms.PictureBox();
             this.lblDescription = new System.Windows.Forms.Label();
-            this.txtDate = new System.Windows.Forms.TextBox();
             this.btnGetToday = new System.Windows.Forms.Button();
             this.btnGetForDate = new System.Windows.Forms.Button();
             this.lblDate = new System.Windows.Forms.Label();
@@ -39,6 +38,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.apodBackgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.dtePictureDate = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.picAstronomyPicture)).BeginInit();
             this.SuspendLayout();
             // 
@@ -62,13 +62,6 @@
             this.lblDescription.Name = "lblDescription";
             this.lblDescription.Size = new System.Drawing.Size(776, 179);
             this.lblDescription.TabIndex = 1;
-            // 
-            // txtDate
-            // 
-            this.txtDate.Location = new System.Drawing.Point(494, 15);
-            this.txtDate.Name = "txtDate";
-            this.txtDate.Size = new System.Drawing.Size(100, 22);
-            this.txtDate.TabIndex = 1;
             // 
             // btnGetToday
             // 
@@ -126,7 +119,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label1.Location = new System.Drawing.Point(450, 18);
+            this.label1.Location = new System.Drawing.Point(366, 18);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(38, 17);
             this.label1.TabIndex = 8;
@@ -149,12 +142,22 @@
             this.apodBackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.apodBackgroundWorker_DoWork);
             this.apodBackgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.apodBackgroundWorker_RunWorkerCompleted);
             // 
+            // dtePictureDate
+            // 
+            this.dtePictureDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtePictureDate.Location = new System.Drawing.Point(410, 13);
+            this.dtePictureDate.Name = "dtePictureDate";
+            this.dtePictureDate.Size = new System.Drawing.Size(200, 22);
+            this.dtePictureDate.TabIndex = 1;
+            this.dtePictureDate.ValueChanged += new System.EventHandler(this.dtePictureDate_ValueChanged);
+            // 
             // AstronomyPictureForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(4)))), ((int)(((byte)(4)))));
             this.ClientSize = new System.Drawing.Size(806, 807);
+            this.Controls.Add(this.dtePictureDate);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblTitle);
@@ -162,7 +165,6 @@
             this.Controls.Add(this.lblDate);
             this.Controls.Add(this.btnGetForDate);
             this.Controls.Add(this.btnGetToday);
-            this.Controls.Add(this.txtDate);
             this.Controls.Add(this.lblDescription);
             this.Controls.Add(this.picAstronomyPicture);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -179,7 +181,6 @@
 
         private System.Windows.Forms.PictureBox picAstronomyPicture;
         private System.Windows.Forms.Label lblDescription;
-        private System.Windows.Forms.TextBox txtDate;
         private System.Windows.Forms.Button btnGetToday;
         private System.Windows.Forms.Button btnGetForDate;
         private System.Windows.Forms.Label lblDate;
@@ -188,6 +189,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.ComponentModel.BackgroundWorker apodBackgroundWorker;
+        private System.Windows.Forms.DateTimePicker dtePictureDate;
     }
 }
 
